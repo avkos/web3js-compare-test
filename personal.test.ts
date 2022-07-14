@@ -1,28 +1,29 @@
 import Web3Personalx4 from '../web3.js/packages/web3-eth-personal/dist'
 import Web3x1 from '../web3.js.1.x/packages/web3'
-import {    create as createAccount} from '../web3.js/packages/web3-eth-accounts';
+import {create as createAccount} from '../web3.js/packages/web3-eth-accounts';
 import Web3Eth from '../web3.js/packages/web3-eth';
+
 export const createNewAccount = async (): Promise<{ address: string; privateKey: string }> => {
     const acc = createAccount();
 
     let clientUrl = 'http://127.0.0.1:8545'
 
-        const web3Personal = new Web3Personalx4(clientUrl);
-        await web3Personal.importRawKey(
-            acc.privateKey.slice(2),
-            '123456',
-        );
-        await web3Personal.unlockAccount(acc.address, '123456', 1000);
+    const web3Personal = new Web3Personalx4(clientUrl);
+    await web3Personal.importRawKey(
+        acc.privateKey.slice(2),
+        '123456',
+    );
+    await web3Personal.unlockAccount(acc.address, '123456', 1000);
 
-        const web3Eth = new Web3Eth(clientUrl);
-        const accList = await web3Personal.getAccounts();
-        await web3Eth.sendTransaction({
-            from: accList[0],
-            to: acc.address,
-            value: '1000000000000000000',
-        });
+    const web3Eth = new Web3Eth(clientUrl);
+    const accList = await web3Personal.getAccounts();
+    await web3Eth.sendTransaction({
+        from: accList[0],
+        to: acc.address,
+        value: '1000000000000000000',
+    });
 
-    return { address: acc.address, privateKey: acc.privateKey };
+    return {address: acc.address, privateKey: acc.privateKey};
 };
 describe('personal', () => {
     let personalx4: Web3Personalx4
@@ -51,8 +52,8 @@ describe('personal', () => {
     })
 
     it('givenProvider', () => {
-        expect(personalx1.givenProvider).toBe(personalx4.givenProvider)
         expect(personalx1.givenProvider).toBe(null)
+        expect(personalx4.givenProvider).toBe(undefined)
     })
     it('currentProvider', () => {
         expect(personalx1.currentProvider.host).toBe(provider)
@@ -68,7 +69,7 @@ describe('personal', () => {
         const pass = 'somePass'
         const acc1 = await personalx1.newAccount(pass)
         const acc4 = await personalx4.newAccount(pass)
-        const str ="Hello world"
+        const str = "Hello world"
         const res1 = await personalx1.sign(str, acc1, pass)
         const res4 = await personalx4.sign(str, acc4, pass)
         expect(res1.length).toBe(res4.length)
@@ -77,13 +78,13 @@ describe('personal', () => {
         const pass = 'somePass'
         const acc1 = await personalx1.newAccount(pass)
         const acc4 = await personalx4.newAccount(pass)
-        const str ="Hello world"
+        const str = "Hello world"
         const res1 = await personalx1.sign(str, acc1, pass)
         const res4 = await personalx4.sign(str, acc4, pass)
         expect(res1.length).toBe(res4.length)
 
-        expect((await personalx1.ecRecover(str,res1)).toLowerCase()).toBe(acc1.toLowerCase())
-        expect((await personalx4.ecRecover(str,res4)).toLowerCase()).toBe(acc4.toLowerCase())
+        expect((await personalx1.ecRecover(str, res1)).toLowerCase()).toBe(acc1.toLowerCase())
+        expect((await personalx4.ecRecover(str, res4)).toLowerCase()).toBe(acc4.toLowerCase())
 
     })
     it('sendTransaction', async () => {
@@ -92,13 +93,13 @@ describe('personal', () => {
         const acc1 = await personalx1.newAccount(pass)
         const acc4 = await personalx4.newAccount(pass)
         const res1 = await personalx1.sendTransaction({
-                from: fromAcc.address,
-                gasPrice: "20000000000",
-                gas: "21000",
-                to: acc1,
-                value: "10",
-                data: ""
-            }, pass)
+            from: fromAcc.address,
+            gasPrice: "20000000000",
+            gas: "21000",
+            to: acc1,
+            value: "10",
+            data: ""
+        }, pass)
         const res4 = await personalx4.sendTransaction({
             from: fromAcc.address,
             gasPrice: "20000000000",
@@ -137,8 +138,8 @@ describe('personal', () => {
     it('importRawKey', async () => {
         const acc1 = createAccount();
         const acc2 = createAccount();
-        const res1 = await personalx1.importRawKey( acc1.privateKey.slice(2),            '123456')
-        const res4 = await personalx4.importRawKey( acc2.privateKey.slice(2),            '123456')
+        const res1 = await personalx1.importRawKey(acc1.privateKey.slice(2), '123456')
+        const res4 = await personalx4.importRawKey(acc2.privateKey.slice(2), '123456')
         expect(res1.length).toEqual(res4.length)
     })
 
