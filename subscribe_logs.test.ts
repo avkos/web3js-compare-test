@@ -64,13 +64,16 @@ describe('subscription', () => {
 
 	describe('logs', () => {
 		it(`wait for ${checkEventCount} logs`, async () => {
+			// @ts-ignore
 			const web3Ethx1 = new Web3x1.modules.Eth(providerWsx1);
 			const web3Ethx4 = new Web3Ethx4(providerWsx4 as any);
 
 			const subx4: any = await web3Ethx4.subscribe('logs', {
+				fromBlock:'0x1',
 				address: contract.options.address,
 			});
 			const subx1: any = await web3Ethx1.subscribe('logs', {
+				fromBlock:'0x1',
 				address: contract.options.address,
 			});
 
@@ -109,12 +112,12 @@ describe('subscription', () => {
 			});
 
 			await makeFewTxToContract({ contract, sendOptions, testDataString });
-
 			await prx1;
 			await prx4;
 			await web3Ethx1.clearSubscriptions(()=>{});
 			await web3Ethx4.clearSubscriptions();
-			expect(Object.keys(datax1).sort().filter(f=>f!=='id')).toEqual(Object.keys(datax4).sort())
+
+			expect(Object.keys(datax1).sort()).toEqual(Object.keys(datax4).sort())
 		});
 	});
 });

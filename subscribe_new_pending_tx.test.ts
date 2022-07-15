@@ -29,6 +29,7 @@ describe('subscription', () => {
 
 	describe('new pending transaction', () => {
 		it(`wait ${checkTxCount} transaction - new pending tx`, async () => {
+			// @ts-ignore
 			const web3Ethx1 = new Web3x1.modules.Eth(providerWsx1);
 			const web3Ethx4 = new Web3Ethx4(providerWsx4 as any);
 

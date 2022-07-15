@@ -25,6 +25,7 @@ describe('eth subscribe', () => {
 
     describe('heads', () => {
         it(`wait for newBlockHeaders`, async () => {
+            // @ts-ignore
             const web3Ethx1 = new Web3x1.modules.Eth(providerWsx1);
             const web3Ethx4 = new Web3Ethx4(providerWsx4 as any);
             const subx1: any = await web3Ethx1.subscribe(name as 'newBlockHeaders');
@@ -63,9 +64,10 @@ describe('eth subscribe', () => {
             await sendFewTxes({web3Eth: web3Ethx4, from, to, value, times: checkTxCount});
             await prx4;
             await prx1;
-            expect(Object.keys(data1).sort().filter(f => f !== 'size')).toEqual(Object.keys(data4).sort())
+            expect(Object.keys(data1).sort()).toEqual(Object.keys(data4).sort())
         });
-        it(`clear`, async () => {
+        it.skip(`clear`, async () => {
+            // @ts-ignore
             const web3Ethx1 = new Web3x1.modules.Eth(providerWsx1);
             const web3Ethx4 = new Web3Ethx4(providerWsx4 as any);
             const subx1: any = await web3Ethx1.subscribe(name as 'newBlockHeaders');
